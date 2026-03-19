@@ -1,0 +1,28 @@
+# Build
+build/
+out/
+cmake-build-*/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cache/
+
+# Compiled
+*.o
+*.a
+*.so
+*.dylib
+
+# compile_commands.json symlink (generated copy lives in build/)
+/compile_commands.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
+watch_dir/
