@@ -26,3 +26,4 @@ Thumbs.db
 
 # Project
 watch_dir/
+*.vibe.out

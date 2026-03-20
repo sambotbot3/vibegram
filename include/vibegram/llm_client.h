@@ -4,11 +4,18 @@
 
 namespace vibegram {
 
+enum class Provider {
+    OpenAI,
+    Anthropic,
+};
+
 struct LLMConfig {
-    std::string api_url = "https://api.anthropic.com/v1/messages";
-    std::string api_key;       // set via ANTHROPIC_API_KEY env var
-    std::string model = "claude-sonnet-4-20250514";
+    std::string api_url = "https://api.openai.com/v1/responses";
+    std::string api_key;
+    std::string model = "gpt-5.4";
     int max_tokens = 1024;
+    Provider provider = Provider::OpenAI;
+    std::string credential_source;
 };
 
 class LLMClient {
@@ -20,6 +27,7 @@ public:
                              const std::string& prompt = "Describe this file's contents concisely.");
 
 private:
+    static LLMConfig resolve_config(LLMConfig config);
     std::string call_api(const std::string& user_message);
     LLMConfig config_;
 };

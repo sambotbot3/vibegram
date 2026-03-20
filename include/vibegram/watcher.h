@@ -15,6 +15,7 @@ public:
 
     void start();
     void stop();
+    static bool is_vibe_file(const std::string& filepath);
 
 private:
     class Listener : public efsw::FileWatchListener {

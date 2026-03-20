@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(CTest)
+
 # --- Dependencies via FetchContent ---
 include(FetchContent)
 
@@ -49,21 +51,31 @@ vibegram_make_available(spdlog "https://github.com/gabime/spdlog.git" "v1.15.1")
 # libcurl - system package
 find_package(CURL REQUIRED)
 
-# --- Main executable ---
-add_executable(vibegram
-    src/main.cpp
-    src/watcher.cpp
-    src/llm_client.cpp
+# --- Library target ---
+add_library(vibegram_lib
+    src/lib/watcher.cpp
+    src/lib/llm_client.cpp
 )
 
-target_include_directories(vibegram PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(vibegram_lib PUBLIC ${CMAKE_SOURCE_DIR}/include)
 
-target_link_libraries(vibegram PRIVATE
+target_link_libraries(vibegram_lib PUBLIC
     efsw
     nlohmann_json::nlohmann_json
     spdlog::spdlog
     CURL::libcurl
 )
+
+# --- Main executable ---
+add_executable(vibegram
+    app/vibegram/main.cpp
+)
+
+target_link_libraries(vibegram PRIVATE vibegram_lib)
+
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
 
 install(TARGETS vibegram RUNTIME DESTINATION bin)
 
